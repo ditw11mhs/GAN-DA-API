@@ -26,14 +26,14 @@ class BotDropship(webdriver.Chrome):
         options = Options()
         if not debug:
             options.add_argument("--headless")
-        # options.add_argument("--disable-dev_shm_usage")
+        options.add_argument("--disable-dev_shm_usage")
         # options.add_argument("--disable-gpu")
-        options.add_argument("--no-sandbox")
+        # options.add_argument("--no-sandbox")
         options.add_argument("--disable-notifications")
         options.add_argument(
             "user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:39.0) Gecko/20100101 Firefox/39.0"
         )
-        # options.add_argument('window-size=1920x1080')
+        options.add_argument("window-size=1920x1080")
         self.teardown = teardown
         super(BotDropship, self).__init__(options=options, desired_capabilities=caps)
 
@@ -50,7 +50,7 @@ class BotDropship(webdriver.Chrome):
     def login(self):
 
         self.get("https://dropshipaja.com/login.php")
-        print("Login")
+        # print("Login")
         self.wait_clickable(10, By.NAME, "userid").send_keys(os.getenv("USER"))
         self.wait_clickable(10, By.NAME, "password").send_keys(os.getenv("PASSWORD"))
         self.wait_clickable(10, By.CSS_SELECTOR, "[type='submit']").click()
@@ -59,7 +59,7 @@ class BotDropship(webdriver.Chrome):
         self.wait_clickable(10, By.XPATH, "//button[@class='close n z']").click()
 
     def go_to_apparel_page(self):
-        print("Go to Apparel Page")
+        # print("Go to Apparel Page")
         self.wait_clickable(
             10,
             By.CSS_SELECTOR,
@@ -72,7 +72,7 @@ class BotDropship(webdriver.Chrome):
                 (By.CSS_SELECTOR, "div[class='same-height-row row products']")
             )
         )
-        print("Getting Stock")
+        # print("Getting Stock")
         product_name = self.get_product_name_list()
         product_stock = self.get_product_stock_list()
         stock_dict = dict(zip(product_name, product_stock))
@@ -111,32 +111,31 @@ class BotDropship(webdriver.Chrome):
         # Click Order Button
 
     def get_delivery_method(self, address, item_amount):
-        self.login()
+        
+        # print("Go to Delivery Method Page")
+        self.wait_clickable(10, By.XPATH, "//li[contains(.,'Cek Ongkir')]").click()
 
-        print("Go to Delivery Method Page")
-        self.wait_clickable(10, By.XPATH, "//a[.='Cek Ongkir']").click()
-
-        print("Select Province")
+        # print("Select Province")
         self.wait_clickable(10, By.XPATH, "//b[1]").click()
         self.wait_clickable(10, By.XPATH, f"//li[.='{address['Province']}']").click()
 
-        print("Select City")
+        # print("Select City")
         self.wait_clickable(10, By.ID, "kabupaten").click()
         self.wait_clickable(10, By.XPATH, f"//option[.='{address['City']}']").click()
 
-        print("Select District")
+        # print("Select District")
         self.wait_clickable(10, By.ID, "kecamatan").click()
         self.wait_clickable(
             10, By.XPATH, f"//option[.='{address['District']}']"
         ).click()
 
-        print("Select Weight")
+        # print("Select Weight")
         weight_form = self.wait_clickable(10, By.ID, "berat")
         weight_form.send_keys(Keys.CONTROL, "a")
         weight_form.send_keys(Keys.BACKSPACE)
         weight_form.send_keys(item_amount * 200)
 
-        print("Submit")
+        # print("Submit")
         self.wait_clickable(10, By.XPATH, "//button[@class='btn btn-primary']").click()
 
         sleep(2)
@@ -151,7 +150,10 @@ class BotDropship(webdriver.Chrome):
             for td in row.find_elements(By.XPATH, "./td"):
                 string = string + td.text + " "
             print(string)
-
+    
+    def get_delivery_method_routine(self, address, item_amount):
+        self.login()
+        self.get_delivery_method(address, item_amount)
 
 class BotBank(webdriver.Chrome):
     def __init__(
