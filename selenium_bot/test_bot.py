@@ -1,5 +1,6 @@
-from bot import BotBank, BotDropship
 import time
+
+from bot import BotBank, BotDropship
 
 with BotBank(teardown=False, debug=True) as bot:
     # start = time.time()
