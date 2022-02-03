@@ -1,15 +1,15 @@
+import os
 from time import sleep
-from turtle import st
 from typing import Dict
+
+from dotenv import load_dotenv
 from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.common.keys import Keys
-from dotenv import load_dotenv
-import os
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
 
 load_dotenv()
 
@@ -49,7 +49,6 @@ class BotBaseModel(webdriver.Chrome):
 
 
 class BotDropship(BotBaseModel):
-
     def login(self):
 
         self.get("https://dropshipaja.com/login.php")
@@ -160,7 +159,6 @@ class BotDropship(BotBaseModel):
 
 
 class BotBank(BotBaseModel):
-
     def logout(self):
         self.wait_clickable(10, By.ID, "nav-logout").click()
         self.wait_clickable(10, By.ID, "btnCancelReg").click()
@@ -186,13 +184,11 @@ class BotBank(BotBaseModel):
             "btnSubmit",
         ).click()
 
-
     def check_transaction(self):
         self.login()
 
         self.wait_clickable(
             10, By.XPATH, "//div[@class='acc-group']//div[@class='acc-left']"
         ).click()
-        
+
         # self.logout()
-        
