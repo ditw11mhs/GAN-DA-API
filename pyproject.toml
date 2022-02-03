@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "gan-da-api"
+version = "0.1.0"
+description = ""
+authors = ["Aditya Wardianto <adityawardianto.19073@mhs.its.ac.id>"]
+
+[tool.poetry.dependencies]
+python = "3.9.7"
+selenium = "^4.1.0"
+fastapi = "^0.73.0"
+uvicorn = "^0.17.0"
+python-dotenv = "^0.19.2"
+requests = "^2.27.1"
+Pyrebase4 = "^4.5.0"
+
+[tool.poetry.dev-dependencies]
+icecream = "^2.1.1"
+black = "^21.12b0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
