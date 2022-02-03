@@ -1,9 +1,10 @@
 from bot import BotBank, BotDropship
 import time
 
-with BotDropship(teardown=True, debug=False) as bot:
-    start = time.time()
-    bot.get_stock_routine()
+with BotBank(teardown=False, debug=True) as bot:
+    # start = time.time()
+    bot.check_transaction()
+    # bot.get_stock_routine()
     # bot.get_delivery_method(
     #     {
     #         "Province": "Jawa Timur",
@@ -13,5 +14,5 @@ with BotDropship(teardown=True, debug=False) as bot:
     #     },
     #     2,
     # )
-    end = time.time()
-    print(end - start)
+    # end = time.time()
+    # print(end - start)

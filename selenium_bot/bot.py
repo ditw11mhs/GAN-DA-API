@@ -14,7 +14,7 @@ import os
 load_dotenv()
 
 
-class BotDropship(webdriver.Chrome):
+class BotBaseModel(webdriver.Chrome):
     def __init__(
         self,
         teardown=False,
@@ -35,7 +35,7 @@ class BotDropship(webdriver.Chrome):
         )
         options.add_argument("window-size=1920x1080")
         self.teardown = teardown
-        super(BotDropship, self).__init__(options=options, desired_capabilities=caps)
+        super(BotBaseModel, self).__init__(options=options, desired_capabilities=caps)
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         if self.teardown:
@@ -46,6 +46,11 @@ class BotDropship(webdriver.Chrome):
 
     def wait_clickable(self, time, by, element):
         return self.wait(time).until(EC.element_to_be_clickable((by, element)))
+
+
+class BotDropship(BotBaseModel):
+    def __init__(self, teardown=False, debug=True):
+        super().__init__(teardown, debug)
 
     def login(self):
 
@@ -111,7 +116,7 @@ class BotDropship(webdriver.Chrome):
         # Click Order Button
 
     def get_delivery_method(self, address, item_amount):
-        
+
         # print("Go to Delivery Method Page")
         self.wait_clickable(10, By.XPATH, "//li[contains(.,'Cek Ongkir')]").click()
 
@@ -150,38 +155,48 @@ class BotDropship(webdriver.Chrome):
             for td in row.find_elements(By.XPATH, "./td"):
                 string = string + td.text + " "
             print(string)
-    
+
     def get_delivery_method_routine(self, address, item_amount):
         self.login()
         self.get_delivery_method(address, item_amount)
 
-class BotBank(webdriver.Chrome):
-    def __init__(
-        self,
-        teardown=False,
-        debug=True,
-    ):
 
-        caps = DesiredCapabilities().CHROME
-        caps["pageLoadStrategy"] = "eager"
-        options = Options()
-        if not debug:
-            options.add_argument("--headless")
-        # options.add_argument("--disable-dev_shm_usage")
-        # options.add_argument("--disable-gpu")
-        # options.add_argument("--no-sandbox")
-        # options.add_argument("--disable-notifications")
-        options.add_argument(
-            "user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:39.0) Gecko/20100101 Firefox/39.0"
-        )
-        # options.add_argument('window-size=1920x1080')
-        self.teardown = teardown
-        super(BotBank, self).__init__(options=options, desired_capabilities=caps)
+class BotBank(BotBaseModel):
+    def __init__(self, teardown=False, debug=True):
+        super().__init__(teardown, debug)
+
+    def logout(self):
+        self.wait_clickable(10, By.ID, "nav-logout").click()
+        self.wait_clickable(10, By.ID, "btnCancelReg").click()
 
     def login(self):
-        self.get("https://ibank.bankmandiri.co.id/retail3/")
+        self.get("https://ibank.bankmandiri.co.id/retail3/loginfo/loginRequest")
 
-        self.find_element(
-            By.XPATH,
-            "/html[1]/body[1]/div[1]/div[1]/div[1]/div[4]/div[1]/form[1]/div[1]/div[1]/input[1]",
+        self.wait_clickable(
+            10,
+            By.ID,
+            "userid_sebenarnya",
         ).send_keys(os.getenv("USER_BANK"))
+
+        self.wait_clickable(
+            10,
+            By.ID,
+            "pwd_sebenarnya",
+        ).send_keys(os.getenv("PASSWORD_BANK"))
+
+        self.wait_clickable(
+            10,
+            By.ID,
+            "btnSubmit",
+        ).click()
+
+
+    def check_transaction(self):
+        self.login()
+
+        self.wait_clickable(
+            10, By.XPATH, "//div[@class='acc-group']//div[@class='acc-left']"
+        ).click()
+        
+        # self.logout()
+        
