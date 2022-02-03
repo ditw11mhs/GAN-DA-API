@@ -1,9 +1,6 @@
 version = 1
 
-test_patterns = [
-  "/selenium_bot/test_bot.py",
-  "/API/test_api.py"
-]
+test_patterns = ["test_*.py"]
 
 [[analyzers]]
 name = "python"
