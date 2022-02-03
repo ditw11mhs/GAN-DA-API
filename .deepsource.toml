@@ -1,8 +1,8 @@
 version = 1
 
 test_patterns = [
-  "selenium_bot/test_bot.py",
-  "API/test_api.py"
+  "/selenium_bot/test_bot.py",
+  "/API/test_api.py"
 ]
 
 [[analyzers]]
