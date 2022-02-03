@@ -10,12 +10,8 @@ test_patterns = [
 ]
 
 exclude_patterns = [
-  "test_*.py",
-  "*/test_*.py",
   "**/test_*.py",
-  "test*.py",
-  "*/test*.py",
-  "**/test*.py"
+  "**/__init__.py"
 ]
 
 [[analyzers]]
