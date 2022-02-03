@@ -9,6 +9,15 @@ test_patterns = [
   "**/test*.py"
 ]
 
+exclude_patterns = [
+  "test_*.py",
+  "*/test_*.py",
+  "**/test_*.py",
+  "test*.py",
+  "*/test*.py",
+  "**/test*.py"
+]
+
 [[analyzers]]
 name = "python"
 enabled = true
