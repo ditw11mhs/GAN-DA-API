@@ -1,10 +1,12 @@
 import sys
 
 sys.path.append("..")
-from fastapi import FastAPI
-from selenium_bot.bot import BotDropship, BotBank
 import json
+
+from fastapi import FastAPI
 from fastapi.responses import JSONResponse
+
+from selenium_bot.bot import BotBank, BotDropship
 
 app = FastAPI()
 
@@ -18,5 +20,3 @@ async def root():
 async def test():
     with BotDropship(teardown=True, debug=False) as b_drop:
         return JSONResponse(b_drop.get_stock_routine())
-    
-
