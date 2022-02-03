@@ -49,8 +49,6 @@ class BotBaseModel(webdriver.Chrome):
 
 
 class BotDropship(BotBaseModel):
-    def __init__(self, teardown=False, debug=True):
-        super().__init__(teardown, debug)
 
     def login(self):
 
@@ -162,8 +160,6 @@ class BotDropship(BotBaseModel):
 
 
 class BotBank(BotBaseModel):
-    def __init__(self, teardown=False, debug=True):
-        super().__init__(teardown, debug)
 
     def logout(self):
         self.wait_clickable(10, By.ID, "nav-logout").click()
