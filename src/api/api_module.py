@@ -3,8 +3,9 @@ import sys
 sys.path.append("../")
 
 from fastapi import FastAPI
-from bot import BotDropship, BotBank
 from fastapi.responses import JSONResponse
+
+from bot import BotBank, BotDropship
 
 app = FastAPI()
 
