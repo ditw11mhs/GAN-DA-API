@@ -103,16 +103,7 @@ class BotDropship(BotBaseModel):
         self.go_to_apparel_page()
         return self.get_stock()
 
-    def get_one_order(self):
-        pass
-
-    def order_routine(self, order):
-        self.login()
-        self.go_to_apparel_page()
-        pass
-        # Click Order Button
-
-    def get_delivery_method(self, address, item_amount):
+    def get_delivery_method(self, address, weight):
 
         # print("Go to Delivery Method Page")
         self.wait_clickable(10, By.XPATH, "//li[contains(.,'Cek Ongkir')]").click()
@@ -135,7 +126,7 @@ class BotDropship(BotBaseModel):
         weight_form = self.wait_clickable(10, By.ID, "berat")
         weight_form.send_keys(Keys.CONTROL, "a")
         weight_form.send_keys(Keys.BACKSPACE)
-        weight_form.send_keys(item_amount * 200)
+        weight_form.send_keys(weight)
 
         # print("Submit")
         self.wait_clickable(10, By.XPATH, "//button[@class='btn btn-primary']").click()
@@ -147,15 +138,19 @@ class BotDropship(BotBaseModel):
             )
         )
 
+        out = []
+
         for row in table.find_elements(By.XPATH, "./tr"):
             string = " "
             for td in row.find_elements(By.XPATH, "./td"):
                 string = string + td.text + " "
-            print(string)
+            out.append(string)
+        print(out)
+        return out
 
-    def get_delivery_method_routine(self, address, item_amount):
+    def get_delivery_method_routine(self, address, weight):
         self.login()
-        self.get_delivery_method(address, item_amount)
+        return self.get_delivery_method(address, weight)
 
 
 class BotBank(BotBaseModel):
