@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Response, status
-from app.api import deliveries, stocks, scrape, test
+
+from app.api import deliveries, scrape, stocks, test
 
 app = FastAPI(docs_url=None)
 
