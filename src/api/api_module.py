@@ -12,6 +12,7 @@ from lxml import html
 import json
 from dotenv import load_dotenv
 
+from bot import BotBank, BotDropship
 
 app = FastAPI()
 
@@ -109,7 +110,7 @@ async def scrap_delivery_method():
     city_flatten = add_flatten_lists(city_list)
 
     district_req_list = [
-        f.post(
+        app.session.post(
             "https://www.dropshipaja.com/customer-track-ongkir-kecamatan.php",
             data={"kabupaten": city},
         )
