@@ -7,7 +7,7 @@ from requests import session
 from requests_futures.sessions import FuturesSession
 from json import load
 from lxml import html
-from app.utils import flat
+from app.utils import *
 import os
 
 
