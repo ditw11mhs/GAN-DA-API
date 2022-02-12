@@ -33,7 +33,6 @@ async def startup_event():
     s.post("https://www.dropshipaja.com/page/login_code.php", data=payload)
     app.session = FuturesSession(session=s)
     app.delivery_id = json.load(open("result.json"))
-    
 
 
 @app.get("/")
@@ -51,7 +50,7 @@ async def check_stock_kaos():
     ]
 
     tree_list = [html.fromstring(req.result().content) for req in req_list]
-    print(tree_list[0])
+
     stock_list = add_flatten_lists(
         [
             tree.cssselect(
@@ -66,7 +65,7 @@ async def check_stock_kaos():
             for tree in tree_list
         ]
     )
-    print(stock_list)
+
     return dict(
         zip(
             [
