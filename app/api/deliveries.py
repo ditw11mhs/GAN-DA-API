@@ -30,7 +30,6 @@ async def startup_deliveries():
 @router.get("/cost")
 @cache(expire=30)
 async def cost(province: str, city: str, district: str, weight: str):
-    print(1)
     try:
 
         id = router.delivery_id[province][city][district]
@@ -46,25 +45,24 @@ async def cost(province: str, city: str, district: str, weight: str):
         headers=headers,
         data={"berat": weight, "kecamatan": id},
     )
-    print("jnt_req")
     jne_req = router.session.post(
         "https://www.dropshipaja.com/getdataongkir_jne_trackinguser.php",
         headers=headers,
         data={"id": id, "berat": weight, "kab": city, "kurir": "jne"},
     )
-    print("jne_req")
+
     sicepat_req = router.session.post(
         "https://www.dropshipaja.com/cek_ongkir.php",
         headers=headers,
         data={"berat": weight, "kab_id": city, "kurir": "sicepat", "subdistrict": id},
     )
-    print("sicepat_req")
+    
     jnt_res = loads(jnt_req.result().json()["content"])[0]
-    print("jnt")
+    
     jne_res = jne_req.result().json()["price"]
-    print("jne")
+    
     sicepat_res = sicepat_req.result().json()["rajaongkir"]["results"][0]["costs"]
-    print("sicepat")
+    
 
     jne_dict = {}
     for jne_service in jne_res:
