@@ -1,9 +1,10 @@
 from itertools import accumulate
+import random
 from dotenv import load_dotenv
 from fastapi import APIRouter
 from requests import session
 from requests_futures.sessions import FuturesSession
-from json import load,dump
+from json import load, dump
 from lxml import html
 from app.utils import *
 import os
@@ -107,5 +108,6 @@ async def scrap_delivery_method():
 
     province_to_city = dict(zip(list_province[1:35], city_to_district))
 
-    with open(os.path.join("app","data","route_id.json"), "w") as fp:
+    with open(os.path.join("app", "data", "route_id.json"), "w") as fp:
         dump(province_to_city, fp)
+

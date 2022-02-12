@@ -1,7 +1,5 @@
-import json
-
 from fastapi import FastAPI, Response, status
-from app.api import deliveries, stocks, scrape
+from app.api import deliveries, stocks, scrape, test
 
 app = FastAPI(docs_url=None)
 
@@ -14,3 +12,4 @@ async def root():
 app.include_router(deliveries.router)
 app.include_router(stocks.router)
 app.include_router(scrape.router)
+app.include_router(test.router)
