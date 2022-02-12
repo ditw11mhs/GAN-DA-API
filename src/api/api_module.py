@@ -2,15 +2,15 @@ import sys
 
 sys.path.append("../")
 
-from fastapi import FastAPI
-from itertools import accumulate
+import json
 import os
+from itertools import accumulate
+
+from dotenv import load_dotenv
+from fastapi import FastAPI
+from lxml import html
 from requests import session
 from requests_futures.sessions import FuturesSession
-
-from lxml import html
-import json
-from dotenv import load_dotenv
 
 from bot import BotBank, BotDropship
 

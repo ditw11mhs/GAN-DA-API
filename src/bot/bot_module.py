@@ -101,10 +101,10 @@
 #         ]
 # # Can be faster
 #     def get_stock_routine(self):
-        
-        
+
+
 #         payload = {'userid':'aditya.wardianto11@gmail.com','password':'Laliteraturaesfuego11'}
-        
+
 #         session = requests.Session()
 #         idk2=session.post('https://www.dropshipaja.com/page/login_code.php',data=payload)
 #         idk = session.get("https://www.dropshipaja.com/kategoridesainonline.php?id=6")
@@ -112,7 +112,7 @@
 #         test = tree.cssselect("h6[class='text-muted stock da-text-secondary-extra-dark mb-2']")
 #         test_2 = tree.cssselect("h5[class='text-left text-justify prdktitlenp']")
 #         return dict(zip([i.text for i in test_2],[i.text for i in test]))
-    
+
 # # Can be faster
 #     def get_delivery_method(self, address, weight):
 
