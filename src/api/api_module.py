@@ -2,15 +2,15 @@ import sys
 
 sys.path.append("../")
 
-from fastapi import FastAPI
-from itertools import accumulate
+import json
 import os
+from itertools import accumulate
+
+from dotenv import load_dotenv
+from fastapi import FastAPI
+from lxml import html
 from requests import session
 from requests_futures.sessions import FuturesSession
-
-from lxml import html
-import json
-from dotenv import load_dotenv
 
 app = FastAPI()
 
@@ -204,7 +204,7 @@ async def cost(province: str, city: str, district: str, weight: str):
             continue
 
         if jne_service["etd_from"] != jne_service["etd_thru"]:
-            if jne_service["etd_from"] != None and jne_service["etd_thru"] != None:
+            if None not in (jne_service["etd_from"], jne_service["etd_thru"]):
                 to_etd = jne_service["etd_from"] + "-" + jne_service["etd_thru"]
             else:
                 to_etd = "-"
