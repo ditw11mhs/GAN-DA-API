@@ -1,6 +1,7 @@
 import json
 import os
 from itertools import accumulate
+
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from lxml import html
