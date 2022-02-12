@@ -12,8 +12,6 @@ from lxml import html
 import json
 from dotenv import load_dotenv
 
-from bot import BotBank, BotDropship
-
 app = FastAPI()
 
 
