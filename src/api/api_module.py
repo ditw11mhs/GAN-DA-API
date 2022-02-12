@@ -2,15 +2,15 @@ import sys
 
 sys.path.append("../")
 
-from fastapi import FastAPI
-from itertools import accumulate
+import json
 import os
+from itertools import accumulate
+
+from dotenv import load_dotenv
+from fastapi import FastAPI
+from lxml import html
 from requests import session
 from requests_futures.sessions import FuturesSession
-
-from lxml import html
-import json
-from dotenv import load_dotenv
 
 app = FastAPI()
 
@@ -33,7 +33,6 @@ async def startup_event():
     s.post("https://www.dropshipaja.com/page/login_code.php", data=payload)
     app.session = FuturesSession(session=s)
     app.delivery_id = json.load(open("result.json"))
-    
 
 
 @app.get("/")
