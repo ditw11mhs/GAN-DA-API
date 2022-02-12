@@ -1,11 +1,6 @@
-import sys
-
-sys.path.append("../")
-
 import json
 import os
 from itertools import accumulate
-
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from lxml import html
@@ -130,16 +125,12 @@ async def scrap_delivery_method():
         for each in city_district:
             temp_list.append(each.split("|")[2].split("-")[0].title())
         district_list.append(temp_list)
-    # print(district_list,len(district_list))
-    # print(district_id,len(district_id))
 
     district_to_id = []
     for lis, id in zip(district_list, district_id):
         district_to_id.append(dict(zip(lis, id)))
 
     district_per_city = list(accumulate([len(lis) for lis in city_list]))
-    print(district_per_city, len(district_per_city))
-    print([len(lis) for lis in city_list], len([len(lis) for lis in city_list]))
 
     city_to_district = []
     for i in range(len(district_per_city)):
@@ -162,10 +153,8 @@ async def scrap_delivery_method():
                 )
             )
 
-    print(city_to_district, len(city_to_district))
-
     province_to_city = dict(zip(list_province[1:35], city_to_district))
-    print(province_to_city)
+
     with open("result.json", "w") as fp:
         json.dump(province_to_city, fp)
 
