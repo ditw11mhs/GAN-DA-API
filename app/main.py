@@ -1,14 +1,14 @@
 import json
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Response, status
 from app.api import deliveries, stocks, scrape
 
-app = FastAPI()
+app = FastAPI(docs_url=None)
 
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World "}
+    return Response(status_code=status.HTTP_200_OK)
 
 
 app.include_router(deliveries.router)

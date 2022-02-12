@@ -1,3 +1,2 @@
 .env
-src/bot/chromedriver.exe
-src/api/chromedriver.exe
+load_test.js
