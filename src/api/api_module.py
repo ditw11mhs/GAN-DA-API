@@ -204,7 +204,7 @@ async def cost(province: str, city: str, district: str, weight: str):
             continue
 
         if jne_service["etd_from"] != jne_service["etd_thru"]:
-            if jne_service["etd_from"] != None and jne_service["etd_thru"] != None:
+            if None not in (jne_service["etd_from"], jne_service["etd_thru"]):
                 to_etd = jne_service["etd_from"] + "-" + jne_service["etd_thru"]
             else:
                 to_etd = "-"
