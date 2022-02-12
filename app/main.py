@@ -1,7 +1,8 @@
 import json
 
 from fastapi import FastAPI
-from app.api import deliveries, stocks, scrape
+
+from app.api import deliveries, scrape, stocks
 
 app = FastAPI()
 
