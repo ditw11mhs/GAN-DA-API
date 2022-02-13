@@ -1,4 +1,4 @@
-from json import load
+from ujson import load, dump
 import random
 from dotenv import load_dotenv
 from fastapi import APIRouter
@@ -31,7 +31,7 @@ async def random_things():
     city, district = random.choice(list(city.items()))
     district, _ = random.choice(list(district.items()))
     return (
-        os.getenv("ROOT_API")
+        os.getenv("DELOYED_API")
         + "/deliveries/cost?province="
         + province.replace(" ", "%20")
         + "&city="
@@ -41,8 +41,9 @@ async def random_things():
         + "&weight="
         + str(random.randrange(200, 2000, 200))
     )
-    
-@router.get("/testJSON")
+
+
+@router.get("/route_id_json")
 async def test_json():
     task = []
     out_dict = {}
@@ -52,28 +53,23 @@ async def test_json():
             out_dict[province][city] = {}
             for district in router.delivery_id[province][city]:
                 out_dict[province][city][district] = {}
-                task.append(router.session.get(
-                    os.getenv("ROOT_API")
-                    + "/deliveries/cost?province="
-                    + province.replace(" ", "%20")
-                    + "&city="
-                    + city.replace(" ", "%20")
-                    + "&district="
-                    + district.replace(" ", "%20")
-                    + "&weight="
-                    + str(random.randrange(200, 2000, 200))
-                ))
-    count=0
-    for province in router.delivery_id.keys():
+                task.append(
+                    router.session.get(
+                        os.getenv("DEPLOYED_ROOT_API")
+                        + "/deliveries/cost?province="
+                        + province.replace(" ", "%20")
+                        + "&city="
+                        + city.replace(" ", "%20")
+                        + "&district="
+                        + district.replace(" ", "%20")
+                        + "&weight="
+                        + str(random.randrange(200, 2000, 200))
+                    )
+                )
+        count = 0
         for city in router.delivery_id[province].keys():
             for district in router.delivery_id[province][city]:
                 out_dict[province][city][district] = task[count].result().status_code
-                count+=1
-                
-    return out_dict
-    
-                    
-            
-        
-            
-                
+                count += 1
+        with open(os.path.join("app", "test", province + ".json"), "w") as fp:
+            dump(out_dict, fp)
