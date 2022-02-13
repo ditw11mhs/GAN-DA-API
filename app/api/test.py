@@ -1,6 +1,5 @@
 from json import load
 import random
-from black import out
 from dotenv import load_dotenv
 from fastapi import APIRouter
 from requests import session
