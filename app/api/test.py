@@ -1,11 +1,11 @@
-from ujson import load, dump
+import os
 import random
+
 from dotenv import load_dotenv
 from fastapi import APIRouter
 from requests import session
 from requests_futures.sessions import FuturesSession
-import os
-
+from ujson import dump, load
 
 router = APIRouter(prefix="/test", tags=["Test"])
 

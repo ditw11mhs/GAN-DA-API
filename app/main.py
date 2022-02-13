@@ -1,6 +1,8 @@
 from os import getenv
+
 from fastapi import FastAPI, Response, status
-from app.api import deliveries, stocks, scrape, test
+
+from app.api import deliveries, scrape, stocks, test
 
 app = FastAPI(docs_url=None)
 
@@ -13,6 +15,5 @@ async def root():
 app.include_router(deliveries.router)
 app.include_router(stocks.router)
 app.include_router(scrape.router)
-if getenv("DEPLOY") in ["False",False]:
+if getenv("DEPLOY") in ["False", False]:
     app.include_router(test.router)
-
