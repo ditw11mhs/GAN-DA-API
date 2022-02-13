@@ -28,12 +28,10 @@ async def startup_deliveries():
 
 
 @router.get("/cost")
-@cache(expire=30)
+@cache(expire=3600)
 async def cost(province: str, city: str, district: str, weight: str):
     try:
-
         id = router.delivery_id[province][city][district]
-
     except:
         HTTPException(status_code=404, detail="Not Found")
 
@@ -63,7 +61,6 @@ async def cost(province: str, city: str, district: str, weight: str):
     
     sicepat_res = sicepat_req.result().json()["rajaongkir"]["results"][0]["costs"]
     
-
     jne_dict = {}
     for jne_service in jne_res:
         service_name = jne_service["service_display"]
@@ -94,5 +91,5 @@ async def cost(province: str, city: str, district: str, weight: str):
     output["JNT"] = {"EZ": {"etd": "-", "cost": jnt_res["cost"]}}
     output["JNE"] = jne_dict
     output["Sicepat"] = sicepat_dict
-
+    
     return output

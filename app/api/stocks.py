@@ -5,14 +5,13 @@ from fastapi_cache.backends.inmemory import InMemoryBackend
 from fastapi_cache.decorator import cache
 from requests import session
 from requests_futures.sessions import FuturesSession
-from json import load
+from ujson import load
 from lxml import html
 from app.utils import *
 import os
 
 
 router = APIRouter(prefix="/stocks", tags=["Stocks"])
-
 
 @router.on_event("startup")
 async def startup_stocks():
@@ -41,7 +40,6 @@ async def check_stock_kaos():
     ]
 
     tree_list = [html.fromstring(req.result().content) for req in req_list]
-
     stock_list = flat(
         [
             tree.cssselect(
