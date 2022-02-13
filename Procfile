@@ -1,1 +1,1 @@
-web: gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.main:app --log-level error
+web: gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.main:app --log-level 'error' --threads 2
