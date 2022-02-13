@@ -1,3 +1,6 @@
+import os
+from json import load, loads
+
 from dotenv import load_dotenv
 from fastapi import APIRouter, HTTPException
 from fastapi_cache import FastAPICache
@@ -5,9 +8,6 @@ from fastapi_cache.backends.inmemory import InMemoryBackend
 from fastapi_cache.decorator import cache
 from requests import session
 from requests_futures.sessions import FuturesSession
-from json import loads, load
-import os
-
 
 router = APIRouter(prefix="/deliveries", tags=["Deliveries"])
 
