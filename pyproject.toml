@@ -16,7 +16,6 @@ lxml = "^4.7.1"
 cssselect = "^1.1.0"
 requests-futures = "^1.0.0"
 fastapi-cache2 = "^0.1.8"
-httpx = "^0.22.0"
 gunicorn = "^20.1.0"
 ujson = "^5.1.0"
 
