@@ -14,7 +14,7 @@ router = APIRouter(prefix="/deliveries", tags=["Deliveries"])
 
 @router.on_event("startup")
 async def startup_deliveries():
-    if os.getenv("DEPLOY") is None:
+    if os.getenv("DEPLOY") is "False":
         load_dotenv()
     payload = {
         "userid": os.getenv("USER_DROPSHIP"),
