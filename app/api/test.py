@@ -30,7 +30,7 @@ async def random_things():
     city, district = random.choice(list(city.items()))
     district, _ = random.choice(list(district.items()))
     return (
-        getenv("DE{LOYED_ROOT_API")
+        getenv("DEPLOYED_ROOT_API")
         + "/deliveries/cost?province="
         + province.replace(" ", "%20")
         + "&city="
