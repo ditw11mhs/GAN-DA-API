@@ -54,42 +54,55 @@ async def cost(province: str, city: str, district: str, weight: str):
         headers=headers,
         data={"berat": weight, "kab_id": city, "kurir": "sicepat", "subdistrict": id},
     )
-    
-    jnt_res = loads(jnt_req.result().json()["content"])[0]
-    
-    jne_res = jne_req.result().json()["price"]
-    
-    sicepat_res = sicepat_req.result().json()["rajaongkir"]["results"][0]["costs"]
-    
-    jne_dict = {}
-    for jne_service in jne_res:
-        service_name = jne_service["service_display"]
-        if "JTR" in service_name:
-            continue
 
-        if jne_service["etd_from"] != jne_service["etd_thru"]:
-            if None not in (jne_service["etd_from"], jne_service["etd_thru"]):
-                to_etd = jne_service["etd_from"] + "-" + jne_service["etd_thru"]
-            else:
-                to_etd = "-"
-        else:
-            to_etd = jne_service["etd_from"]
+    jnt_parse(output, jnt_req)
+    jne_parse(output, jne_req)
+    sicepat_parse(output, sicepat_req)
 
-        jne_dict[service_name] = {
-            "etd": to_etd,
-            "cost": jne_service["price"],
-        }
-
-    sicepat_dict = {}
-    for sicepat_service in sicepat_res:
-        service_name = sicepat_service["service"]
-        sicepat_dict[service_name] = {
-            "etd": sicepat_service["cost"][0]["etd"],
-            "cost": str(sicepat_service["cost"][0]["value"]),
-        }
-
-    output["JNT"] = {"EZ": {"etd": "-", "cost": jnt_res["cost"]}}
-    output["JNE"] = jne_dict
-    output["Sicepat"] = sicepat_dict
-    
     return output
+
+
+def jnt_parse(output, jnt_req):
+    res = jnt_req.result().json()
+    if "content" in res:
+        jnt_res = loads(res["content"])[0]
+        output["JNT"] = {"EZ": {"etd": "-", "cost": jnt_res["cost"]}}
+
+
+def sicepat_parse(output, sicepat_req):
+    res = sicepat_req.result().json()["rajaongkir"]
+    if "results" in res:
+        sicepat_res = res["results"][0]["costs"]
+        sicepat_dict = {}
+        for sicepat_service in sicepat_res:
+            service_name = sicepat_service["service"]
+            sicepat_dict[service_name] = {
+                "etd": sicepat_service["cost"][0]["etd"],
+                "cost": str(sicepat_service["cost"][0]["value"]),
+            }
+        output["Sicepat"] = sicepat_dict
+
+
+def jne_parse(output, jne_req):
+    res = jne_req.result().json()
+    if "price" in res:
+        jne_res = res["price"]
+        jne_dict = {}
+        for jne_service in jne_res:
+            service_name = jne_service["service_display"]
+            if "JTR" in service_name:
+                continue
+
+            if jne_service["etd_from"] != jne_service["etd_thru"]:
+                if None not in (jne_service["etd_from"], jne_service["etd_thru"]):
+                    to_etd = jne_service["etd_from"] + "-" + jne_service["etd_thru"]
+                else:
+                    to_etd = "-"
+            else:
+                to_etd = jne_service["etd_from"]
+
+            jne_dict[service_name] = {
+                "etd": to_etd,
+                "cost": jne_service["price"],
+            }
+        output["JNE"] = jne_dict
