@@ -45,8 +45,9 @@ async def random_things():
 @router.get("/route_id_json")
 async def test_json():
     task = []
-    out_dict = {}
+    
     for province in router.delivery_id.keys():
+        out_dict = {}
         out_dict[province] = {}
         for city in router.delivery_id[province].keys():
             out_dict[province][city] = {}
