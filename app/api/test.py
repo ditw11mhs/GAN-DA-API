@@ -1,10 +1,11 @@
-from ujson import load, dump
 import random
+from os import getenv, path
+
 from dotenv import load_dotenv
 from fastapi import APIRouter
 from requests import session
 from requests_futures.sessions import FuturesSession
-from os import getenv,path
+from ujson import dump, load
 
 router = APIRouter(prefix="/test", tags=["Test"])
 
@@ -45,7 +46,7 @@ async def random_things():
 @router.get("/route_id_json")
 async def test_json():
     task = []
-    
+
     for province in router.delivery_id.keys():
         out_dict = {}
         out_dict[province] = {}
