@@ -30,7 +30,7 @@ async def startup_stocks():
 
 
 @router.get("/kaos")
-@cache(expire=600)
+@cache(expire=600,namespace="stock-kaos")
 async def check_stock_kaos():
     req_list = [
         router.session.get(
