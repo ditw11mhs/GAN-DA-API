@@ -1,8 +1,10 @@
 from dotenv import load_dotenv
 from fastapi import APIRouter, HTTPException
+from fastapi_cache import FastAPICache
+from fastapi_cache.backends.inmemory import InMemoryBackend
+from fastapi_cache.decorator import cache
 from requests import session
 from requests_futures.sessions import FuturesSession
-from diskcache import Cache
 from json import loads, load
 import os
 
@@ -22,54 +24,42 @@ async def startup_deliveries():
     s.post("https://www.dropshipaja.com/page/login_code.php", data=payload)
     router.session = FuturesSession(session=s)
     router.delivery_id = load(open(os.path.join("app", "data", "route_id.json")))
-    router.cache = Cache()
+    FastAPICache.init(InMemoryBackend(), prefix="fastapi-cache")
 
 
 @router.get("/cost")
+@cache(expire=3600)
 async def cost(province: str, city: str, district: str, weight: str):
     try:
         id = router.delivery_id[province][city][district]
     except:
         HTTPException(status_code=404, detail="Not Found")
 
-    router.cache.expire()
-    if f"{province}_{city}_{district}_{weight}" in list(router.cache):
-        return router.cache.get(
-            f"{province}_{city}_{district}_{weight}",
-        )
-    else:
-        output = {}
-        headers = {"Content-Type": "application/x-www-form-urlencoded"}
+    output = {}
+    headers = {"Content-Type": "application/x-www-form-urlencoded"}
 
-        jnt_req = router.session.post(
-            "https://www.dropshipaja.com/api-jnt/tarif.php",
-            headers=headers,
-            data={"berat": weight, "kecamatan": id},
-        )
-        jne_req = router.session.post(
-            "https://www.dropshipaja.com/getdataongkir_jne_trackinguser.php",
-            headers=headers,
-            data={"id": id, "berat": weight, "kab": city, "kurir": "jne"},
-        )
+    jnt_req = router.session.post(
+        "https://www.dropshipaja.com/api-jnt/tarif.php",
+        headers=headers,
+        data={"berat": weight, "kecamatan": id},
+    )
+    jne_req = router.session.post(
+        "https://www.dropshipaja.com/getdataongkir_jne_trackinguser.php",
+        headers=headers,
+        data={"id": id, "berat": weight, "kab": city, "kurir": "jne"},
+    )
 
-        sicepat_req = router.session.post(
-            "https://www.dropshipaja.com/cek_ongkir.php",
-            headers=headers,
-            data={
-                "berat": weight,
-                "kab_id": city,
-                "kurir": "sicepat",
-                "subdistrict": id,
-            },
-        )
+    sicepat_req = router.session.post(
+        "https://www.dropshipaja.com/cek_ongkir.php",
+        headers=headers,
+        data={"berat": weight, "kab_id": city, "kurir": "sicepat", "subdistrict": id},
+    )
 
-        jnt_parse(output, jnt_req)
-        jne_parse(output, jne_req)
-        sicepat_parse(output, sicepat_req)
-        
-        router.cache.set(f"{province}_{city}_{district}_{weight}", output,expire=3600, tag=f"delivery_{province}_{city}_{district}")
-        
-        return output
+    jnt_parse(output, jnt_req)
+    jne_parse(output, jne_req)
+    sicepat_parse(output, sicepat_req)
+
+    return output
 
 
 def jnt_parse(output, jnt_req):
