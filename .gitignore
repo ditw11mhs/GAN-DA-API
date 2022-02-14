@@ -2,3 +2,4 @@
 load_test.js
 dev.ipynb
 k6_load.js
+__pycache__/
