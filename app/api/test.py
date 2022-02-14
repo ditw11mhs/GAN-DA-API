@@ -1,11 +1,11 @@
-from ujson import load, dump, loads
 import random
-from fastapi import APIRouter, HTTPException
+from os import getenv, path
+
 from dotenv import load_dotenv
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from requests import session
 from requests_futures.sessions import FuturesSession
-from os import getenv,path
+from ujson import dump, load, loads
 
 router = APIRouter(prefix="/tests", tags=["Test"])
 
@@ -30,13 +30,15 @@ async def random_things():
     province, city = random.choice(router.del_list)
     city, district = random.choice(list(city.items()))
     district, _ = random.choice(list(district.items()))
-    return await cost(province, city, district,weight=str(random.randrange(200, 2000, 200)))
+    return await cost(
+        province, city, district, weight=str(random.randrange(200, 2000, 200))
+    )
 
 
 @router.get("/route_id_json")
 async def test_json():
     task = []
-    
+
     for province in router.delivery_id.keys():
         out_dict = {}
         out_dict[province] = {}
@@ -64,6 +66,7 @@ async def test_json():
                 count += 1
         with open(path.join("app", "test", province + ".json"), "w") as fp:
             dump(out_dict, fp)
+
 
 async def cost(province: str, city: str, district: str, weight: str):
     try:
