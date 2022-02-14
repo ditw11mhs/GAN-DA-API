@@ -5,7 +5,7 @@ from app.api import deliveries, stocks, scrape, test
 
 load_dotenv()
 
-app = FastAPI(docs_url=None)
+app = FastAPI()
 
 @app.get("/")
 async def root():
