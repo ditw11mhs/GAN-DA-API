@@ -15,7 +15,7 @@ router = APIRouter(prefix="/stocks", tags=["Stocks"])
 
 @router.on_event("startup")
 async def startup_stocks():
-    if os.getenv("DEPLOY") is "False":
+    if os.getenv("DEPLOY") == "False":
         load_dotenv()
 
     payload = {
