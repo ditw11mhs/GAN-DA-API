@@ -32,7 +32,7 @@ async def startup_stocks():
 async def check_stock_kaos():
     router.cache.expire()
     if "stock_kaos" in list(router.cache):
-        return router.cache.get("stock_kaos", tag="stock")
+        return router.cache.get("stock_kaos")
     else:
         req_list = [
             router.session.get(

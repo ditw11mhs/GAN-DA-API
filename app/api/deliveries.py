@@ -36,7 +36,6 @@ async def cost(province: str, city: str, district: str, weight: str):
     if f"{province}_{city}_{district}_{weight}" in list(router.cache):
         return router.cache.get(
             f"{province}_{city}_{district}_{weight}",
-            tag=f"delivery_{province}_{city}_{district}",
         )
     else:
         output = {}
