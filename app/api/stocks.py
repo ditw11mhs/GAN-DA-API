@@ -1,17 +1,19 @@
+import os
+
 from dotenv import load_dotenv
 from fastapi import APIRouter, HTTPException
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.inmemory import InMemoryBackend
 from fastapi_cache.decorator import cache
+from lxml import html
 from requests import session
 from requests_futures.sessions import FuturesSession
 from ujson import load
-from lxml import html
-from app.utils import *
-import os
 
+from app.utils import *
 
 router = APIRouter(prefix="/stocks", tags=["Stocks"])
+
 
 @router.on_event("startup")
 async def startup_stocks():
@@ -30,7 +32,7 @@ async def startup_stocks():
 
 
 @router.get("/kaos")
-@cache(expire=600,namespace="stock-kaos")
+@cache(expire=600, namespace="stock-kaos")
 async def check_stock_kaos():
     req_list = [
         router.session.get(
