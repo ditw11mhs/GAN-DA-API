@@ -7,12 +7,14 @@ load_dotenv()
 
 app = FastAPI()
 
+
 @app.get("/")
 async def root():
     return Response(status_code=status.HTTP_200_OK)
 
+
 app.include_router(deliveries.router)
 app.include_router(stocks.router)
-app.include_router(scrape.router)
-if getenv("DEPLOY") in ["False", False]:
+if getenv("DEPLOY") == "False":
     app.include_router(test.router)
+    app.include_router(scrape.router)
