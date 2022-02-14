@@ -1,13 +1,14 @@
+import os
+
+from diskcache import Cache
 from dotenv import load_dotenv
 from fastapi import APIRouter, HTTPException
+from lxml import html
 from requests import session
 from requests_futures.sessions import FuturesSession
 from ujson import load
-from lxml import html
-from app.utils import *
-from diskcache import Cache
-import os
 
+from app.utils import *
 
 router = APIRouter(prefix="/stocks", tags=["Stocks"])
 
