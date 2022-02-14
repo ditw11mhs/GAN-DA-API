@@ -13,6 +13,7 @@ import os
 
 router = APIRouter(prefix="/stocks", tags=["Stocks"])
 
+
 @router.on_event("startup")
 async def startup_stocks():
     if os.getenv("DEPLOY") == "False":
@@ -30,7 +31,7 @@ async def startup_stocks():
 
 
 @router.get("/kaos")
-@cache(expire=600,namespace="stock-kaos")
+@cache(expire=600, namespace="stock-kaos")
 async def check_stock_kaos():
     req_list = [
         router.session.get(
