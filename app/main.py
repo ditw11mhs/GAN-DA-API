@@ -15,6 +15,6 @@ async def root():
 
 app.include_router(deliveries.router)
 app.include_router(stocks.router)
-app.include_router(test.router)
 if getenv("DEPLOY") == "False":
+    app.include_router(test.router)
     app.include_router(scrape.router)
