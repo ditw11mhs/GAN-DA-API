@@ -30,7 +30,7 @@ async def cost(province: str, city: str, district: str, weight: str):
     try:
         id = router.delivery_id[province][city][district]
     except:
-        HTTPException(status_code=404, detail="Not Found")
+        return HTTPException(status_code=404, detail="Not Found")
 
     router.cache.expire()
     if f"{province}_{city}_{district}_{weight}" in list(router.cache):
@@ -66,9 +66,14 @@ async def cost(province: str, city: str, district: str, weight: str):
         jnt_parse(output, jnt_req)
         jne_parse(output, jne_req)
         sicepat_parse(output, sicepat_req)
-        
-        router.cache.set(f"{province}_{city}_{district}_{weight}", output,expire=3600, tag=f"delivery_{province}_{city}_{district}")
-        
+
+        router.cache.set(
+            f"{province}_{city}_{district}_{weight}",
+            output,
+            expire=3600,
+            tag=f"delivery_{province}_{city}_{district}",
+        )
+
         return output
 
 
