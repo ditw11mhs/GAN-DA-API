@@ -1,11 +1,11 @@
+import os
+from json import load, loads
+
+from diskcache import Cache
 from dotenv import load_dotenv
 from fastapi import APIRouter, HTTPException
 from requests import session
 from requests_futures.sessions import FuturesSession
-from diskcache import Cache
-from json import loads, load
-import os
-
 
 router = APIRouter(prefix="/deliveries", tags=["Deliveries"])
 
